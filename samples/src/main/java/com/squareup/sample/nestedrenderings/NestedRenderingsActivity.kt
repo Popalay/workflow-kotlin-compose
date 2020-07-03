@@ -19,6 +19,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Providers
 import androidx.ui.graphics.Color
+import androidx.ui.layout.ExperimentalLayout
 import com.squareup.workflow.diagnostic.SimpleLoggingDiagnosticListener
 import com.squareup.workflow.ui.ViewEnvironment
 import com.squareup.workflow.ui.ViewRegistry
@@ -26,23 +27,26 @@ import com.squareup.workflow.ui.WorkflowRunner
 import com.squareup.workflow.ui.compose.withCompositionRoot
 import com.squareup.workflow.ui.setContentWorkflow
 
+@ExperimentalLayout
 private val viewRegistry = ViewRegistry(
     RecursiveViewFactory,
     LegacyRunner
 )
 
+@ExperimentalLayout
 private val viewEnvironment = ViewEnvironment(viewRegistry).withCompositionRoot { content ->
-  Providers(BackgroundColorAmbient provides Color.Green, children = content)
+    Providers(BackgroundColorAmbient provides Color.Green, children = content)
 }
 
 class NestedRenderingsActivity : AppCompatActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentWorkflow(viewEnvironment) {
-      WorkflowRunner.Config(
-          RecursiveWorkflow,
-          diagnosticListener = SimpleLoggingDiagnosticListener()
-      )
+    @ExperimentalLayout
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentWorkflow(viewEnvironment) {
+            WorkflowRunner.Config(
+                RecursiveWorkflow,
+                diagnosticListener = SimpleLoggingDiagnosticListener()
+            )
+        }
     }
-  }
 }

@@ -28,6 +28,7 @@ import androidx.ui.graphics.Color
 import androidx.ui.graphics.compositeOver
 import androidx.ui.layout.Arrangement.SpaceEvenly
 import androidx.ui.layout.Column
+import androidx.ui.layout.ExperimentalLayout
 import androidx.ui.layout.FlowRow
 import androidx.ui.layout.MainAxisAlignment
 import androidx.ui.layout.SizeMode.Expand
@@ -40,8 +41,8 @@ import androidx.ui.tooling.preview.Preview
 import com.squareup.sample.R
 import com.squareup.sample.nestedrenderings.RecursiveWorkflow.Rendering
 import com.squareup.workflow.ui.ViewEnvironment
-import com.squareup.workflow.ui.compose.composedViewFactory
 import com.squareup.workflow.ui.compose.WorkflowRendering
+import com.squareup.workflow.ui.compose.composedViewFactory
 import com.squareup.workflow.ui.compose.tooling.preview
 
 /**
@@ -52,6 +53,7 @@ val BackgroundColorAmbient = ambientOf<Color> { error("No background color speci
 /**
  * A `ViewFactory` that renders [RecursiveWorkflow.Rendering]s.
  */
+@ExperimentalLayout
 val RecursiveViewFactory = composedViewFactory<Rendering> { rendering, viewEnvironment ->
   // Every child should be drawn with a slightly-darker background color.
   val color = BackgroundColorAmbient.current
@@ -81,22 +83,23 @@ val RecursiveViewFactory = composedViewFactory<Rendering> { rendering, viewEnvir
   }
 }
 
+@ExperimentalLayout
 @Preview
 @Composable fun RecursiveViewFactoryPreview() {
-  Providers(BackgroundColorAmbient provides Color.Green) {
-    RecursiveViewFactory.preview(
-        Rendering(
-            children = listOf(
-                "foo",
-                Rendering(
-                    children = listOf("bar"),
-                    onAddChildClicked = {}, onResetClicked = {}
-                )
-            ), onAddChildClicked = {}, onResetClicked = {}
-        ),
-        placeholderModifier = Modifier.fillMaxSize()
-    )
-  }
+    Providers(BackgroundColorAmbient provides Color.Green) {
+        RecursiveViewFactory.preview(
+            Rendering(
+                children = listOf(
+                    "foo",
+                    Rendering(
+                        children = listOf("bar"),
+                        onAddChildClicked = {}, onResetClicked = {}
+                    )
+                ), onAddChildClicked = {}, onResetClicked = {}
+            ),
+            placeholderModifier = Modifier.fillMaxSize()
+        )
+    }
 }
 
 @Composable private fun Children(
@@ -122,21 +125,22 @@ val RecursiveViewFactory = composedViewFactory<Rendering> { rendering, viewEnvir
   }
 }
 
+@ExperimentalLayout
 @Composable private fun Buttons(
-  onAdd: () -> Unit,
-  onReset: () -> Unit
+    onAdd: () -> Unit,
+    onReset: () -> Unit
 ) {
-  // Use a FlowRow so the buttons will wrap when the parent is too narrow.
-  FlowRow(
-      mainAxisSize = Expand,
-      mainAxisAlignment = MainAxisAlignment.SpaceEvenly,
-      crossAxisSpacing = dimensionResource(R.dimen.recursive_padding)
-  ) {
-    Button(onClick = onAdd) {
-      Text("Add Child")
+    // Use a FlowRow so the buttons will wrap when the parent is too narrow.
+    FlowRow(
+        mainAxisSize = Expand,
+        mainAxisAlignment = MainAxisAlignment.SpaceEvenly,
+        crossAxisSpacing = dimensionResource(R.dimen.recursive_padding)
+    ) {
+        Button(onClick = onAdd) {
+            Text("Add Child")
+        }
+        Button(onClick = onReset) {
+            Text("Reset")
+        }
     }
-    Button(onClick = onReset) {
-      Text("Reset")
-    }
-  }
 }

@@ -19,6 +19,7 @@ package com.squareup.sample.launcher
 
 import androidx.activity.ComponentActivity
 import androidx.compose.Composable
+import androidx.ui.layout.ExperimentalLayout
 import com.squareup.sample.hellocompose.App
 import com.squareup.sample.hellocompose.HelloComposeActivity
 import com.squareup.sample.hellocomposebinding.DrawHelloRenderingPreview
@@ -27,6 +28,7 @@ import com.squareup.sample.nestedrenderings.NestedRenderingsActivity
 import com.squareup.sample.nestedrenderings.RecursiveViewFactoryPreview
 import kotlin.reflect.KClass
 
+@ExperimentalLayout
 val samples = listOf(
     Sample(
         "Hello Compose Binding", HelloBindingActivity::class,

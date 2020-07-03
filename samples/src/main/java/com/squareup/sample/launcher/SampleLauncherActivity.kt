@@ -18,8 +18,10 @@ package com.squareup.sample.launcher
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.ui.core.setContent
+import androidx.ui.layout.ExperimentalLayout
 
 class SampleLauncherActivity : AppCompatActivity() {
+  @ExperimentalLayout
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
