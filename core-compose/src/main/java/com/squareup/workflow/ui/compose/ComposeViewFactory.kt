@@ -24,12 +24,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.compose.Composable
 import androidx.compose.FrameManager
+import androidx.compose.Recomposer
 import androidx.compose.mutableStateOf
+import androidx.ui.core.setContent
 import com.squareup.workflow.ui.ViewEnvironment
 import com.squareup.workflow.ui.ViewFactory
 import com.squareup.workflow.ui.bindShowRendering
 import com.squareup.workflow.ui.compose.internal.ParentComposition
-import com.squareup.workflow.ui.compose.internal.setContent
 import kotlin.reflect.KClass
 
 /**
@@ -79,16 +80,16 @@ import kotlin.reflect.KClass
  * with the [CompositionRoot]. See the documentation on [CompositionRoot] for more information.
  */
 inline fun <reified RenderingT : Any> composedViewFactory(
-  noinline showRendering: @Composable() (
-    rendering: RenderingT,
-    environment: ViewEnvironment
-  ) -> Unit
+    noinline showRendering: @Composable (
+        rendering: RenderingT,
+        environment: ViewEnvironment
+    ) -> Unit
 ): ViewFactory<RenderingT> = ComposeViewFactory(RenderingT::class, showRendering)
 
 @PublishedApi
 internal class ComposeViewFactory<RenderingT : Any>(
-  override val type: KClass<RenderingT>,
-  internal val content: @Composable() (RenderingT, ViewEnvironment) -> Unit
+    override val type: KClass<RenderingT>,
+    internal val content: @Composable (RenderingT, ViewEnvironment) -> Unit
 ) : ViewFactory<RenderingT> {
 
   override fun buildView(
@@ -115,10 +116,10 @@ internal class ComposeViewFactory<RenderingT : Any>(
         }
       }
 
-      composeContainer.setContent(parent = null) {
-        val (rendering, environment) = state.value
-        content(rendering, environment)
-      }
+        composeContainer.setContent(Recomposer.current(), parentComposition = null) {
+            val (rendering, environment) = state.value
+            content(rendering, environment)
+        }
     } else {
       // This composition will be a subcomposition of another composition, we must recompose it
       // manually every time something changes. This is not documented anywhere, but according to
@@ -131,9 +132,9 @@ internal class ComposeViewFactory<RenderingT : Any>(
           initialViewEnvironment
       ) { rendering, environment ->
         // Entry point to the world of Compose.
-        composeContainer.setContent(parentComposition) {
-          content(rendering, environment)
-        }
+          composeContainer.setContent(Recomposer.current(), parentComposition = parentComposition) {
+              content(rendering, environment)
+          }
       }
     }
 

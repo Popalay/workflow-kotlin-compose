@@ -63,11 +63,11 @@ abstract class ComposeWorkflow<in PropsT, out OutputT : Any> :
  * Returns a [ComposeWorkflow] that renders itself using the given [render] function.
  */
 inline fun <PropsT, OutputT : Any> Workflow.Companion.composed(
-  crossinline render: @Composable() (
-    props: PropsT,
-    outputSink: Sink<OutputT>,
-    environment: ViewEnvironment
-  ) -> Unit
+    crossinline render: @Composable (
+        props: PropsT,
+        outputSink: Sink<OutputT>,
+        environment: ViewEnvironment
+    ) -> Unit
 ): ComposeWorkflow<PropsT, OutputT> = object : ComposeWorkflow<PropsT, OutputT>() {
   @Composable override fun render(
     props: PropsT,

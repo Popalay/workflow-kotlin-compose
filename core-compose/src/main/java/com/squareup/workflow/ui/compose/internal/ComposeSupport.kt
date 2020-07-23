@@ -17,19 +17,8 @@
 
 package com.squareup.workflow.ui.compose.internal
 
-import android.content.Context
-import android.view.ViewGroup
-import androidx.compose.Composable
-import androidx.compose.Composition
-import androidx.compose.CompositionReference
-import androidx.compose.FrameManager
-import androidx.compose.Recomposer
-import androidx.compose.compositionFor
-import androidx.ui.core.AndroidOwner
-import androidx.ui.node.UiComposer
-import com.squareup.workflow.ui.compose.internal.ReflectionSupport.createWrappedContent
-import com.squareup.workflow.ui.core.compose.R
 
+/*
 private typealias WrappedComposition = Composition
 
 private val DefaultLayoutParams = ViewGroup.LayoutParams(
@@ -37,6 +26,7 @@ private val DefaultLayoutParams = ViewGroup.LayoutParams(
     ViewGroup.LayoutParams.WRAP_CONTENT
 )
 
+*/
 /**
  * Copy of the built-in [setContent] function that takes an additional parent
  * [CompositionReference]. This will eventually be built-in to Compose, but until then this function
@@ -47,10 +37,11 @@ private val DefaultLayoutParams = ViewGroup.LayoutParams(
  * Tracked with Google [here](https://issuetracker.google.com/issues/156527485).
  * Note that ambient _changes_ also don't seem to get propagated currently, that bug is tracked
  * [here](https://issuetracker.google.com/issues/156527486).
- */
-internal fun ViewGroup.setContent(
+ *//*
+
+internal fun ViewGroup.setContent2(
   parent: CompositionReference?,
-  content: @Composable() () -> Unit
+  content: @Composable () -> Unit
 ): Composition {
   FrameManager.ensureStarted()
   val composeView: AndroidOwner =
@@ -62,26 +53,35 @@ internal fun ViewGroup.setContent(
   return doSetContent(context, composeView, Recomposer.current(), parent, content)
 }
 
+*/
 /**
  * This is almost an exact copy of the private `doSetContent` function in Compose, but
  * it also accepts a parent [CompositionReference].
- */
+ *//*
+
+@OptIn(ExperimentalComposeApi::class)
 private fun doSetContent(
   context: Context,
   owner: AndroidOwner,
   recomposer: Recomposer,
   parent: CompositionReference?,
-  content: @Composable() () -> Unit
+  content: @Composable () -> Unit
 ): Composition {
-  // val original = compositionFor(context, owner.root, recomposer)
   val original = compositionFor(
+      context,
+      owner.root,
+      recomposer
+  )
+*/
+/*  val original = compositionFor(
       container = owner.root,
       recomposer = recomposer,
       parent = parent,
       composerFactory = { slotTable, factoryRecomposer ->
         UiComposer(context, owner.root, slotTable, factoryRecomposer)
       }
-  )
+  )*//*
+
 
   val wrapped = owner.view.getTag(R.id.wrapped_composition_tag)
       as? WrappedComposition
@@ -106,3 +106,4 @@ private object ReflectionSupport {
     original: Composition
   ): WrappedComposition = WRAPPED_COMPOSITION_CTOR.newInstance(owner, original) as Composition
 }
+*/

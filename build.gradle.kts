@@ -35,6 +35,7 @@ buildscript {
     google()
     // For binary compatibility validator.
     maven { url = uri("https://kotlin.bintray.com/kotlinx") }
+    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap/") }
   }
 }
 
@@ -46,6 +47,7 @@ subprojects {
     google()
     mavenCentral()
     jcenter()
+    maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap/") }
   }
 
   configurations.all {
@@ -85,7 +87,7 @@ subprojects {
 
       // Don't panic, all this does is allow us to use the @OptIn meta-annotation.
       // to define our own experiments.
-      freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+      freeCompilerArgs = freeCompilerArgs + listOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check", "-Xopt-in=kotlin.RequiresOptIn")
     }
   }
 

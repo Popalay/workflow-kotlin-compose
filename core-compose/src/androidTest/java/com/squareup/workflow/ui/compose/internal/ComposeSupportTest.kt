@@ -73,16 +73,17 @@ class ComposeSupportTest {
     }
   }
 
-  @Composable private fun LegacyHostComposable(leafContent: @Composable() () -> Unit) {
-    val wormhole = Wormhole(compositionReference(), leafContent)
-    // This is valid Compose code, but the IDE doesn't know that yet so it will show an
-    // unsuppressable error.
-    WormholeView(wormhole = wormhole)
+  @Composable
+  private fun LegacyHostComposable(leafContent: @Composable () -> Unit) {
+      val wormhole = Wormhole(compositionReference(), leafContent)
+      // This is valid Compose code, but the IDE doesn't know that yet so it will show an
+      // unsuppressable error.
+      WormholeView(wormhole = wormhole)
   }
 
   private class Wormhole(
-    val parentReference: CompositionReference,
-    val childContent: @Composable() () -> Unit
+      val parentReference: CompositionReference,
+      val childContent: @Composable () -> Unit
   )
 
   private class WormholeView(context: Context) : FrameLayout(context) {

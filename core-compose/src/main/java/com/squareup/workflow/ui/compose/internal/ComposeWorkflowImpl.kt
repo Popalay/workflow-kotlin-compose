@@ -16,17 +16,17 @@
 package com.squareup.workflow.ui.compose.internal
 
 import androidx.compose.MutableState
-import androidx.compose.StructurallyEqual
 import androidx.compose.mutableStateOf
+import androidx.compose.structuralEqualityPolicy
 import com.squareup.workflow.RenderContext
 import com.squareup.workflow.Sink
 import com.squareup.workflow.Snapshot
 import com.squareup.workflow.StatefulWorkflow
 import com.squareup.workflow.action
-import com.squareup.workflow.ui.compose.internal.ComposeWorkflowImpl.State
 import com.squareup.workflow.contraMap
 import com.squareup.workflow.ui.compose.ComposeRendering
 import com.squareup.workflow.ui.compose.ComposeWorkflow
+import com.squareup.workflow.ui.compose.internal.ComposeWorkflowImpl.State
 
 internal class ComposeWorkflowImpl<PropsT, OutputT : Any>(
   private val workflow: ComposeWorkflow<PropsT, OutputT>
@@ -45,8 +45,8 @@ internal class ComposeWorkflowImpl<PropsT, OutputT : Any>(
     props: PropsT,
     snapshot: Snapshot?
   ): State<PropsT, OutputT> {
-    val propsHolder = mutableStateOf(props, areEquivalent = StructurallyEqual)
-    val sinkHolder = SinkHolder<OutputT>()
+      val propsHolder = mutableStateOf(props, policy = structuralEqualityPolicy())
+      val sinkHolder = SinkHolder<OutputT>()
     return State(propsHolder, sinkHolder, ComposeRendering { environment ->
       // The sink will get set on the first render pass, so it should never be null.
       val sink = sinkHolder.sink!!

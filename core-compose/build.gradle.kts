@@ -31,7 +31,7 @@ apply(from = rootProject.file(".buildscript/android-ui-tests.gradle"))
 
 apply(from = rootProject.file(".buildscript/configure-compose.gradle"))
 tasks.withType<KotlinCompile> {
-  kotlinOptions.apiVersion = "1.3"
+  kotlinOptions.apiVersion = "1.4"
 }
 
 dependencies {

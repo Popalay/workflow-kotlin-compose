@@ -22,6 +22,7 @@ import android.widget.FrameLayout
 import androidx.compose.Composable
 import androidx.compose.compositionReference
 import androidx.compose.remember
+import androidx.ui.core.ContextAmbient
 import androidx.ui.core.Modifier
 import androidx.ui.foundation.Box
 import com.squareup.workflow.ui.ViewEnvironment
@@ -86,15 +87,18 @@ import kotlin.properties.Delegates.observable
   rendering: R,
   viewEnvironment: ViewEnvironment
 ) {
-  // Plumb the current composition through the ViewEnvironment so any nested composable factories
-  // get access to any ambients currently in effect.
-  val parentComposition = remember { ParentComposition() }
-  parentComposition.reference = compositionReference()
-  val wrappedEnvironment = remember(viewEnvironment) {
-    viewEnvironment + (ParentComposition to parentComposition)
-  }
+    // Plumb the current composition through the ViewEnvironment so any nested composable factories
+    // get access to any ambients currently in effect.
+    val parentComposition = remember { ParentComposition() }
+    parentComposition.reference = compositionReference()
+    val wrappedEnvironment = remember(viewEnvironment) {
+        viewEnvironment + (ParentComposition to parentComposition)
+    }
 
-  HostView(viewFactory = viewFactory, update = Pair(rendering, wrappedEnvironment))
+    HostView(ContextAmbient.current).apply {
+        this.viewFactory = viewFactory
+        this.update = Pair(rendering, wrappedEnvironment)
+    }
 }
 
 /**
