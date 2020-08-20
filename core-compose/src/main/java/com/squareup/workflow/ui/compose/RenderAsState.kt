@@ -24,11 +24,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.savedinstancestate.Saver
 import androidx.compose.runtime.savedinstancestate.SaverScope
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.node.Ref
-import androidx.compose.ui.platform.CoroutineContextAmbient
 import com.squareup.workflow.Snapshot
 import com.squareup.workflow.Workflow
 import com.squareup.workflow.diagnostic.WorkflowDiagnosticListener
@@ -158,18 +158,18 @@ inline fun <RenderingT> Workflow<Unit, Nothing, RenderingT>.renderAsState(
   diagnosticListener: WorkflowDiagnosticListener?,
   snapshotKey: String? = null
 ): State<RenderingT> {
-  @Suppress("DEPRECATION")
-  val coroutineContext = CoroutineContextAmbient.current + Dispatchers.Main.immediate
-  val snapshotState = savedInstanceState(key = snapshotKey, saver = SnapshotSaver) { null }
+    val coroutineScope = rememberCoroutineScope()
+    val coroutineContext = coroutineScope.coroutineContext + Dispatchers.Main.immediate
+    val snapshotState = savedInstanceState(key = snapshotKey, saver = SnapshotSaver) { null }
 
-  val outputRef = remember { Ref<(OutputT) -> Unit>() }
-  outputRef.value = onOutput
+    val outputRef = remember { Ref<(OutputT) -> Unit>() }
+    outputRef.value = onOutput
 
-  // We can't use onActive/on(Pre)Commit because they won't run their callback until after this
-  // function returns, and we need to run this immediately so we get the rendering synchronously.
-  val state = remember(coroutineContext, workflow, diagnosticListener) {
-    WorkflowState(coroutineContext, workflow, props, outputRef, snapshotState, diagnosticListener)
-  }
+    // We can't use onActive/on(Pre)Commit because they won't run their callback until after this
+    // function returns, and we need to run this immediately so we get the rendering synchronously.
+    val state = remember(coroutineContext, workflow, diagnosticListener) {
+        WorkflowState(coroutineContext, workflow, props, outputRef, snapshotState, diagnosticListener)
+    }
   state.setProps(props)
 
   return state.rendering
