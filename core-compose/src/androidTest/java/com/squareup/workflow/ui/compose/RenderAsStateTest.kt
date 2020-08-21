@@ -206,7 +206,7 @@ class RenderAsStateTest {
     override fun initialState(
       props: Unit,
       snapshot: Snapshot?
-    ): String = snapshot?.bytes?.parse { it.readUtf8WithLength() } ?: ""
+    ): String = snapshot?.bytes?.parse { it.readUtf8WithLength() }.orEmpty()
 
     override fun render(
       props: Unit,
