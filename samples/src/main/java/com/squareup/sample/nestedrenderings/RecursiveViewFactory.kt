@@ -61,18 +61,18 @@ val RecursiveViewFactory = composedViewFactory<Rendering> { rendering, viewEnvir
         .compositeOver(Color.Black)
   }
 
-  Card(color = color) {
-    Column(
-        Modifier.padding(dimensionResource(R.dimen.recursive_padding))
-            .fillMaxSize(),
-        horizontalGravity = CenterHorizontally
-    ) {
-      Providers(BackgroundColorAmbient provides childColor) {
-        Children(
-            rendering.children, viewEnvironment,
-            // Pass a weight so that the column fills all the space not occupied by the buttons.
-            modifier = Modifier.weight(1f, fill = true)
-        )
+  Card(backgroundColor = color) {
+      Column(
+          Modifier.padding(dimensionResource(R.dimen.recursive_padding))
+              .fillMaxSize(),
+          horizontalGravity = CenterHorizontally
+      ) {
+          Providers(BackgroundColorAmbient provides childColor) {
+              Children(
+                  rendering.children, viewEnvironment,
+                  // Pass a weight so that the column fills all the space not occupied by the buttons.
+                  modifier = Modifier.weight(1f, fill = true)
+              )
       }
       Buttons(
           onAdd = rendering.onAddChildClicked,
