@@ -20,14 +20,14 @@ import kotlin.reflect.full.declaredMembers
 
 object Versions {
   const val compose = "1.0.0-alpha02"
-  const val kotlin = "1.4.0"
+  const val kotlin = "1.4.10"
   const val targetSdk = 29
   const val workflow = "0.28.0"
 }
 
 @Suppress("unused")
 object Dependencies {
-  const val android_gradle_plugin = "com.android.tools.build:gradle:4.2.0-alpha09"
+  const val android_gradle_plugin = "com.android.tools.build:gradle:4.2.0-alpha10"
 
   object AndroidX {
     const val appcompat = "androidx.appcompat:appcompat:1.1.0"
