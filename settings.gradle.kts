@@ -20,3 +20,11 @@ include(
     ":core-compose",
     ":samples"
 )
+
+sourceControl {
+    gitRepository(java.net.URI("https://github.com/Popalay/workflow.git")) {
+        producesModule("com.squareup.workflow:workflow-core")
+        producesModule("com.squareup.workflow:workflow-runtime")
+        producesModule("com.squareup.workflow:workflow-ui-core-android")
+    }
+}

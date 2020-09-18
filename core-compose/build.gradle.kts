@@ -30,7 +30,11 @@ apply(from = rootProject.file(".buildscript/android-ui-tests.gradle"))
 apply(from = rootProject.file(".buildscript/configure-compose.gradle"))
 
 dependencies {
-    api(Dependencies.Workflow.UI.coreAndroid)
+    api(Dependencies.Workflow.UI.coreAndroid){
+        version {
+            branch = "popalay/multiplatform"
+        }
+    }
 
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.layout)
