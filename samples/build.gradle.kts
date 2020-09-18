@@ -42,7 +42,11 @@ dependencies {
             branch = "popalay/multiplatform"
         }
     }
-    implementation(Dependencies.Workflow.runtime)
+    implementation(Dependencies.Workflow.runtime) {
+        version {
+            branch = "popalay/multiplatform"
+        }
+    }
     implementation(Dependencies.Workflow.UI.coreAndroid)
 
     debugImplementation(project(":compose-tooling"))
