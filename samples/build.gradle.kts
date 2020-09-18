@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright 2020 Square Inc.
  *
@@ -17,8 +15,8 @@
  */
 
 plugins {
-  id("com.android.application")
-  kotlin("android")
+    id("com.android.application")
+    kotlin("android")
 }
 
 apply(from = rootProject.file(".buildscript/configure-android-defaults.gradle"))
@@ -26,22 +24,26 @@ apply(from = rootProject.file(".buildscript/android-sample-app.gradle"))
 apply(from = rootProject.file(".buildscript/android-ui-tests.gradle"))
 
 android {
-  defaultConfig {
-    applicationId = "com.squareup.sample"
-  }
+    defaultConfig {
+        applicationId = "com.squareup.sample"
+    }
 }
 
 apply(from = rootProject.file(".buildscript/configure-compose.gradle"))
 
 dependencies {
-  implementation(project(":core-compose"))
-  implementation(Dependencies.AndroidX.appcompat)
-  implementation(Dependencies.Compose.layout)
-  implementation(Dependencies.Compose.material)
-  implementation(Dependencies.Compose.foundation)
-  implementation(Dependencies.Workflow.core)
-  implementation(Dependencies.Workflow.runtime)
-  implementation(Dependencies.Workflow.UI.coreAndroid)
+    implementation(project(":core-compose"))
+    implementation(Dependencies.AndroidX.appcompat)
+    implementation(Dependencies.Compose.layout)
+    implementation(Dependencies.Compose.material)
+    implementation(Dependencies.Compose.foundation)
+    implementation(Dependencies.Workflow.core) {
+        version {
+            branch = "popalay/multiplatform"
+        }
+    }
+    implementation(Dependencies.Workflow.runtime)
+    implementation(Dependencies.Workflow.UI.coreAndroid)
 
-  debugImplementation(project(":compose-tooling"))
+    debugImplementation(project(":compose-tooling"))
 }

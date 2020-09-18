@@ -75,8 +75,8 @@ object Dependencies {
   }
 
   object Workflow {
-    const val core = "com.squareup.workflow:workflow-core-jvm:${Versions.workflow}"
-    const val runtime = "com.squareup.workflow:workflow-runtime-jvm:${Versions.workflow}"
+    const val core = "com.squareup.workflow:workflow-core:${Versions.workflow}"
+    const val runtime = "com.squareup.workflow:workflow-runtime:${Versions.workflow}"
 
     object UI {
       const val coreAndroid = "com.squareup.workflow:workflow-ui-core-android:${Versions.workflow}"
